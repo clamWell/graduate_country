@@ -182,16 +182,16 @@ width: 27px; height: 30px;}
 
 .story-header {background: #2a2a34;}
 .story-top-graphic { position: relative; box-sizing: border-box;width:100%;  overflow:visible; }
-.story-top-graphic .graphic-holder { position: relative; width:100%;margin: 0 auto;max-width: 800px; overflow: hidden;}
+.story-top-graphic .graphic-holder { position: relative; width:100%;margin: 0 auto;max-width: 1100px; overflow: hidden;}
 .story-top-graphic .graphic-holder .map {display: block; width:100%;   }
 .story-top-graphic .graphic-holder .cover{ position: absolute; top:0; left:0; width:100%; } 
-.story-top-graphic .graphic-holder .cover img {     opacity: 0.8;width:100%; transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1); transform: scale(3); transform-origin: 250px 200px;}
+.story-top-graphic .graphic-holder .cover img {  width:100%; transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1); transform: scale(3); transform-origin: 250px 200px;}
 .story-top-graphic .graphic-holder .cover img.scaleDown { transform: scale(1); transform-origin: 250px 200px;}
 .graphic-text {position: absolute; top: 50%; text-align: center; width: 100%;  color: #fff;  opacity:0.8; font-size: 20px;  font-family: 'Noto Serif KR', 'notokr-regular';}
 .graphic-text p { position:relative; top: -20px; opacity:0; margin: 4px 0;}
 .graphic-text .line-deco { width:1px; height: 500px; background:#fff; position: relative; margin-top: 40px; left:50%;  opacity: 0.5; height: 0px;}
 
-.story-header-text { position: relative;  margin-top: 180px; box-sizing: border-box; padding-bottom: 100px;}
+.story-header-text { position: relative;  box-sizing: border-box; padding-bottom: 100px;}
 .story-header-text .title-holder {  }
 .story-header-text .title-holder h1 { font-size:0px; text-indent:-9999px;visibility:none; }
 .story-header-text .strong-des { }
@@ -205,8 +205,8 @@ width: 27px; height: 30px;}
 .title-as-svg {width: 850px; margin: 0 auto; }
 .title-svg { width: 100%; display:block; }
 #PAGE_TITLE {}
-#PAGE_TITLE path { fill: #fff; fill-opacity: 0; stroke:#fff; stroke-width: 0.1; stroke-opacity: 1; stroke-dasharray: 210;  stroke-dashoffset: 210;}
-
+#PAGE_TITLE path { fill: #fff; fill-opacity: 0; stroke:#fff; stroke-width: 0.1; stroke-opacity: 1; stroke-dasharray: 60;  stroke-dashoffset: 60;}
+#PAGE_TITLE path.path-last { stroke-dasharray: 80;stroke-dashoffset: 80;}
 /** story body **/
 
 .story-intro { display:none;}
@@ -234,6 +234,78 @@ width: 27px; height: 30px;}
 .img-holder .caption { font-size: 15px; opacity: 0.4; width:100%; text-align: center;  padding: 20px 0;}
 .img-holder-col-2 .col-holder::after { clear:both; content:""; display:block; }
 
+#FLOW_CHART { margin: 100px auto;}
+.chart-layer { position: relative; width: 1140px; margin: 0 auto;}
+.chart-layer .base { position: relative; }
+.chart-layer .chart-step-02 { position: absolute; top:0;left:0;opacity: 0; height:1px; }
+.chart-layer .chart-step-03 { position: absolute; top:0;left:0; opacity: 0;height:1px; }
+
+.des-box { margin: 0px auto; width: 800px; padding: 20px;  box-sizing: border-box; border: 1px solid #ddd;}
+.des-box .box-wrap {width: 100%;}
+.des-box .box-wrap p {text-align: center;color: #2f3235;}
+.des-box .box-wrap p u { font-weight:bold; }
+
+.interview-list-area {  width: 100%;margin: 50px auto; background: #2a2a34; position: relative;min-height: 1000px;    box-sizing: border-box; padding-top: 100px;}
+.interview-list-area .background-map {position: absolute;  left: 50%; margin-left: -850px; top: 50%; margin-top: -400px;}
+.interview-list-area .background-map .map-default {}
+.interview-list-area .background-map .map-default img { transition: all 1s ease;  width: 400px;}
+.interview-list-area .background-map .stu-path {transition: all 1s ease;  position: absolute;top: 0; left: 0; width: 400px; opacity:0.8;}
+.interview-list-area .background-map .stu-path > img { width:100%; }
+
+.interview-list-area .background-map.show {  margin-left: -750px;}
+.interview-list-area .background-map.show .stu-path { opacity:1;width: 600px; }
+.interview-list-area .background-map.show .map-default img { width: 600px;}
+
+.photo-album-wrapper{z-index:2; max-width: 1100px; box-sizing:border-box;  position: relative;margin: 0 auto; left: 50px;border-radius: 5px; overflow: hidden; }
+.photo-album-paper { width:100%; background: url("../img/paper-texture-light.jpg") repeat-y;  background-size: 100% auto; box-sizing: border-box; padding: 15px 25px;}
+.photo-album-wrapper .album-head {text-align: left;font-size: 14px;border-bottom: 2px solid #282832;padding-bottom: 8px;}
+.photo-album-wrapper .photo-album-col-2 {box-sizing: border-box; width: 100%; position: relative;margin-top: 20px;}
+.photo-album-wrapper .photo-album-col-2 .album-col-left { width: 50%; float:left; }
+.photo-album-wrapper .photo-album-col-2 .album-col-right {width: 50%; float:left;  }
+.photo-album-wrapper .photo-album-col-2::after { clear: both; content:""; display:block; }
+.photo-album-wrapper .photo-album-col-2 ul {width: 100%;}
+.photo-album-wrapper .photo-album-col-2 ul li { width: 20%;height: 165px; color: #47474d; display: inline-block; float: left; box-sizing: border-box;    padding: 5px 0px; }
+.photo-album-wrapper .photo-album-col-2 ul li .each-photo {  position: relative; width: 85%;box-sizing: border-box; border-radius: 4px;overflow: hidden; margin: 0px auto; }
+.photo-album-wrapper .photo-album-col-2 ul li .each-photo > img { width:100%; box-sizing: border-box; }
+.photo-album-wrapper .photo-album-col-2 ul li .name {  font-size: 15.5px;font-weight: bold; line-height: 1;margin-top: 5px;}
+.photo-album-wrapper .photo-album-col-2 ul li .status {font-size: 12px; opacity: 0.7;}
+.photo-album-wrapper .photo-album-col-2 ul::after { clear: both; content:""; display:block; }
+em.div { font-style: normal; font-size: 10px; opacity: 0.8;margin: 0px 2px;}
+.student-click { cursor:pointer;}
+.student-click:hover >  .each-photo { box-shadow: 3px 3px 15px rgba(0,0,0,0.2);}
+.student-click .each-photo  { border: 2px solid #282832; }
+.student-off { cursor:default; opacity:0.3; }
+.photo-album-wrapper .photo-album-col-2 ul li .each-photo .star {position: absolute; top: -2px;right: -2px; width: 20px; background: #282832;  box-sizing: border-box;  padding: 4px; border-radius: 0px 0px 0px 5px;}
+.photo-album-wrapper .photo-album-col-2 ul li .each-photo .star img{ display:block; width:100%; }
+span.stu { display: inline-block; background: #282832;  color: #fff; box-sizing: border-box; padding: 1px 5px; font-size: 15px; line-height: 20px;}
+span.stu .star {  width: 15px; vertical-align: top; position: relative;top: 2px;}
+.student-click { opacity:0; position: relative; top: -10px; }
+.photo-album-wrapper .photo-album-col-2 ul li.ml-400 { margin-left:40%; }
+
+.photo-album-wrapper.hidden { opacity:0; pointer-events: none; }
+
+
+.interview-paper-wrapper {z-index:1; transition: all 1s cubic-bezier(0.65, 0, 0.35, 1);  width: 800px; box-sizing:border-box;  /* position: relative;margin: 0 auto; left: 200px; */border-radius: 5px;opacity:0; 
+background: url("../img/paper-texture-light.jpg") repeat-y;  background-size: 100% auto;margin-top: 100px; position: absolute; top: 200px; left:50%; margin-left: -250px; }
+.interview-paper-wrapper .interview-area {width:100%;  box-sizing: border-box; padding: 40px;text-align: left;}
+.interview-paper-wrapper .interview-area .top-status {margin-bottom: 20px; padding-bottom: 20px;position: relative;
+position: relative; box-sizing: border-box; min-height:80px; }
+.interview-paper-wrapper .interview-area .top-status .photo { position: absolute; height: 80px;border-radius: 10px;}
+.interview-paper-wrapper .interview-area .top-status .nameOcc { font-weight: bold;font-size: 24px;box-sizing: border-box;padding-left: 80px;}
+.interview-paper-wrapper .interview-area .top-status .life-path {  font-size: 18.5px; font-weight: 300;box-sizing: border-box; padding-left: 80px;}
+.interview-paper-wrapper .interview-area .interview-qa-holder { border-top: 2px solid #111; padding-top: 30px; box-sizing: border-box;max-height: 600px;overflow-y: scroll;}
+.interview-paper-wrapper .interview-area .interview-qa-holder .each-qa-set { width:100%; box-sizing:border-box; margin-bottom: 30px;}
+.interview-paper-wrapper .interview-area .interview-qa-holder .each-qa-set .qu { font-weight: bold; font-size: 17px;}
+.interview-paper-wrapper .interview-area .interview-qa-holder .each-qa-set .anw {font-size: 18px;word-break: keep-all; line-height: 1.7; font-family: 'Noto Serif KR', 'notokr-regular';}
+.interview-paper-wrapper .interview-area .top-status .nameOcc em.div {  font-size: 20px;opacity: 0.6; margin: 0px 7px;}
+
+.back-btn-holder { margin: 0; position: absolute; top: -30px; left:-20px; }
+.back-btn-holder .back-button {   transition: all 0.2s ease 0s; width: 200px; box-sizing: border-box;padding: 10px 0px;text-align: center; border-radius: 4px;background: #4c4d55;cursor: pointer;}
+.back-btn-holder .back-button p {color: #fff;font-size: 15.5px; font-weight: 400; opacity: 0.8;}
+.back-btn-holder .back-button:hover { box-shadow: 10px 10px 15px rgb(61 61 70 / 25%); transform: translate(-5px, 0px);}
+.back-btn-holder .back-button:hover p {  opacity: 1;}
+
+.interview-paper-wrapper.show { opacity: 1; top: 0px; }
 
 /*****footer*****/
 .footer-area {  background:#fff;  margin-top: 100px;  box-shadow: 0px -15px 20px rgba(0,0,0,0.05); border-top: 1px solid #cdd1d6;

@@ -75,7 +75,53 @@ $(function(){
 	/******** 모바일 전용 조정 ********/
 
 
+	function makePhotoAlbum(school){
+		var _data;
+		var $albumHolder;
+		if(school == "강릉"){
+			$albumHolder = $("#ALBUM_GANG");
+			_data = graduateData.filter( function(v){
+				return v.school == "강릉여고"
+			})
+			$albumHolder.find(".photo-album-col-2 ul").html("");
 
+			for(i=0; i<_data.length; i++){
+				var star="";
+				if(_data[i].interview == "O"){
+					classStr = "each-student student-click";
+					star="<div class='star'><img src='img/star.png' alt=''></div>";
+				}else if(_data[i].clickOff == "O"){
+					classStr = "each-student student-off";
+				}else{
+					classStr = "each-student";
+				}
+				
+				if(_data[i].noGraphic !== "O"){
+					classStr = classStr+" student-path"
+				}
+
+				var template = "<li class='"+classStr+"' data-id='"+_data[i].id+"'><div class='each-photo'><img src='img/photo_st_"+_data[i].id+".png'alt=''>"+star+"</div><p class='name'>"+_data[i].name+"</p><p class='status'>"+_data[i].occu+"<em class='div'>·</em>"+_data[i].residenceCity+"</p></li>";
+
+				if(i<18){
+					$albumHolder.find(".album-col-left ul").append(template);
+				}else{
+					$albumHolder.find(".album-col-right ul").append(template);
+				}
+			}
+			showAlbumPhoto = function(){
+				var $photo = $(".student-click");
+				for(p=0; p<$photo.length;p++){
+					$photo.eq(p).delay(p*100).animate({"opacity":"1", "top":"0px"}, 500);
+				};
+			}
+			$(".each-student").eq(15).addClass("ml-400")
+
+
+		}
+	
+	};
+
+	makePhotoAlbum("강릉");
 
 	init();
 	$(".loading-page").fadeOut(500, function(){
@@ -99,12 +145,77 @@ $(function(){
 		for(o=0; o<$introItem.length;o++){
 			$introItem.eq(o).delay(o*700).animate({"opacity":"1", "top":"0px"}, 1200, "easeOutSine");
 			if(o == $introItem.length-1){
-				$(".line-deco").delay(1000).animate({"height":"500px"}, 2000, "easeOutSine");
+				$(".line-deco").delay(2100).animate({"height":"500px"}, 2000, "easeOutSine");
 			
 			}
 			
 		};
 	}
+
+	var flowChartAniDone = false; 
+	function makeChartFlow(){
+		$(".chart-step-02").stop().animate({"height":"100%", "opacity":"1"}, 2500);
+		$(".chart-step-03").delay(700).stop().animate({"height":"100%", "opacity":"1"}, 3500);
+	}
+
+	var albumAniDone = false; 
+	var showAlbumPhoto; 
+
+	$(".student-click").on("click", function(){
+		var _id = $(this).attr("data-id");
+		makeInterviewPage(_id);
+		showInterviewPage();
+	});
+
+	$(".each-student").on("mouseover", function(){
+		var _id = $(this).attr("data-id");
+		console.log(_id);
+		if($(this).hasClass("student-path")){
+			$(".interview-list-area .background-map .stu-path").find("img").attr("src","img/map-path-stu-"+_id+".png");
+		}else{
+			$(".interview-list-area .background-map .stu-path").find("img").attr("src","");
+		}		
+	});
+
+	$(".back-button").on("click", function(){
+		hideInterviewPage();
+	});
+
+	function makeInterviewPage(dataId){
+		var _personData;
+		var _qnaData;
+		graduateData.forEach( function(v,i,a){
+			if (v.id == dataId){
+				_personData = v;
+			}
+		})
+
+		qnaData.forEach( function(v,i,a){
+			if (v.id == dataId){
+				_qnaData = v;
+			}
+		})
+		console.log(_qnaData);
+		$(".interview-list-area .background-map .stu-path").find("img").attr("src","img/map-path-stu-"+dataId+".png");
+		$(".interview-paper-wrapper .interview-area .top-status .photo").attr("src", "img/photo_st_"+dataId+".png");
+		$(".interview-paper-wrapper .interview-area .top-status .nameOcc").find(".name").html(_personData.name);
+		$(".interview-paper-wrapper .interview-area .top-status .nameOcc").find(".occu").html(_personData.occu);
+		$(".interview-paper-wrapper .interview-area .top-status .life-path").html(_qnaData.status);
+
+	}
+
+	function showInterviewPage(){
+		$(".photo-album-wrapper").addClass("hidden");
+		$(".interview-paper-wrapper").addClass("show");
+		$(".interview-list-area .background-map").addClass("show");
+	};
+
+	function hideInterviewPage(){
+		$(".photo-album-wrapper").removeClass("hidden");
+		$(".interview-paper-wrapper").removeClass("show");
+		$(".interview-list-area .background-map").removeClass("show");
+	};
+
 	$(window).scroll(function(){
 		var nowScroll = $(window).scrollTop();
 		if(nowScroll > screenHeight*0.5){
@@ -113,6 +224,27 @@ $(function(){
 				activTitlePathAni();
 			}
 		}
+
+		if(nowScroll > $("#FLOW_CHART").offset().top - screenHeight*0.6){
+			if(flowChartAniDone==false){
+				flowChartAniDone = true;
+				makeChartFlow();
+			}
+		}else if(flowChartAniDone==true){
+			flowChartAniDone = false;
+			$(".chart-step-02").css({"height":"1px", "opacity":"0"});
+			$(".chart-step-03").css({"height":"1px", "opacity":"0"});
+		}
+
+		if(nowScroll > $("#ALBUM_GANG").offset().top - screenHeight*0.6){
+			if(albumAniDone==false){
+				albumAniDone = true;
+				showAlbumPhoto();
+			}
+		}
+
+		
+
 	});
 	   
 });
