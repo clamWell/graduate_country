@@ -578,7 +578,7 @@ var graduateData = [
     "uniName": "전북대",
     "occu": "공시생",
     "residence": "비수도권",
-    "residenceCity": null,
+    "residenceCity": "비수도권",
     "hometown": null,
     "interview": null,
     "clickOff": null,

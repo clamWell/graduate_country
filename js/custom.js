@@ -116,12 +116,50 @@ $(function(){
 			}
 			$(".each-student").eq(15).addClass("ml-400")
 
+		}else if(school == "고창"){
+			$albumHolder = $("#ALBUM_GOCHANG");
+			_data = graduateData.filter( function(v){
+				return v.school == "고창여고"
+			})
+			$albumHolder.find(".photo-album-col-2 ul").html("");
+
+			for(i=0; i<_data.length; i++){
+				var star="";
+				if(_data[i].interview == "O"){
+					classStr = "each-student student-click";
+					star="<div class='star'><img src='img/star.png' alt=''></div>";
+				}else if(_data[i].clickOff == "O"){
+					classStr = "each-student student-off";
+				}else{
+					classStr = "each-student";
+				}
+				
+				if(_data[i].noGraphic !== "O"){
+					classStr = classStr+" student-path"
+				}
+
+				var template = "<li class='"+classStr+"' data-id='"+_data[i].id+"'><div class='each-photo'><img src='img/photo_st_"+_data[i].id+".png'alt=''>"+star+"</div><p class='name'>"+_data[i].name+"</p><p class='status'>"+_data[i].occu+"<em class='div'>·</em>"+_data[i].residenceCity+"</p></li>";
+
+				if(i<14){
+					$albumHolder.find(".album-col-left ul").append(template);
+				}else{
+					$albumHolder.find(".album-col-right ul").append(template);
+				}
+			}
+			showAlbumPhoto = function(){
+				var $photo = $(".student-click");
+				for(p=0; p<$photo.length;p++){
+					$photo.eq(p).delay(p*100).animate({"opacity":"1", "top":"0px"}, 500);
+				};
+			}
+			$(".each-student").eq(46).addClass("ml-200")
 
 		}
 	
 	};
 
 	makePhotoAlbum("강릉");
+	makePhotoAlbum("고창");
 
 	init();
 	$(".loading-page").fadeOut(500, function(){
@@ -163,10 +201,12 @@ $(function(){
 
 	$(".student-click").on("click", function(){
 		var _id = $(this).attr("data-id");
+
 		makeInterviewPage(_id);
-		showInterviewPage();
+		showInterviewPage(_id);
 	});
 
+	
 	$(".each-student").on("mouseover", function(){
 		var _id = $(this).attr("data-id");
 		console.log(_id);
@@ -178,7 +218,8 @@ $(function(){
 	});
 
 	$(".back-button").on("click", function(){
-		hideInterviewPage();
+		var region = $(this).attr("data-region");
+		hideInterviewPage(region);
 	});
 
 	function makeInterviewPage(dataId){
@@ -189,31 +230,50 @@ $(function(){
 				_personData = v;
 			}
 		})
-
 		qnaData.forEach( function(v,i,a){
 			if (v.id == dataId){
 				_qnaData = v;
 			}
 		})
+
+		var $body;
+		if(dataId<37){
+			$body = $("#ITV_GANG");
+		}else{
+			$body = $("#ITV_GOCHANG");
+		}
 		console.log(_qnaData);
-		$(".interview-list-area .background-map .stu-path").find("img").attr("src","img/map-path-stu-"+dataId+".png");
-		$(".interview-paper-wrapper .interview-area .top-status .photo").attr("src", "img/photo_st_"+dataId+".png");
-		$(".interview-paper-wrapper .interview-area .top-status .nameOcc").find(".name").html(_personData.name);
-		$(".interview-paper-wrapper .interview-area .top-status .nameOcc").find(".occu").html(_personData.occu);
-		$(".interview-paper-wrapper .interview-area .top-status .life-path").html(_qnaData.status);
+		$body.find(".background-map .stu-path img").attr("src","img/map-path-stu-"+dataId+".png");
+		$body.find(".interview-paper-wrapper .interview-area .top-status .photo").attr("src", "img/photo_st_"+dataId+".png");
+		$body.find(".interview-paper-wrapper .interview-area .top-status .nameOcc .name").html(_personData.name);
+		$body.find(".interview-paper-wrapper .interview-area .top-status .nameOcc .occu").html(_personData.occu);
+		$body.find(".interview-paper-wrapper .interview-area .top-status .life-path").html(_qnaData.status);
 
 	}
 
-	function showInterviewPage(){
-		$(".photo-album-wrapper").addClass("hidden");
-		$(".interview-paper-wrapper").addClass("show");
-		$(".interview-list-area .background-map").addClass("show");
+	function showInterviewPage(id){
+		if(id<37){
+			$body = $("#ITV_GANG");
+		}else{
+			$body = $("#ITV_GOCHANG");
+		}
+		$body.find(".photo-album-wrapper").addClass("hidden");
+		$body.find(".interview-paper-wrapper").addClass("show");
+		$body.find(".background-map").addClass("show");
+
 	};
 
-	function hideInterviewPage(){
-		$(".photo-album-wrapper").removeClass("hidden");
-		$(".interview-paper-wrapper").removeClass("show");
-		$(".interview-list-area .background-map").removeClass("show");
+	function hideInterviewPage(region){
+		if(region=="gang"){
+			$body = $("#ITV_GANG");
+		}else{
+			$body = $("#ITV_GOCHANG");
+		}
+		$body.find(".photo-album-wrapper").removeClass("hidden");
+		$body.find(".interview-paper-wrapper").removeClass("show");
+		$body.find(".background-map").removeClass("show");
+
+		$(".interview-qa-holder").scrollTop(0);
 	};
 
 	$(window).scroll(function(){

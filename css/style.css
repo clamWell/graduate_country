@@ -281,6 +281,7 @@ span.stu { display: inline-block; background: #282832;  color: #fff; box-sizing:
 span.stu .star {  width: 15px; vertical-align: top; position: relative;top: 2px;}
 .student-click { opacity:0; position: relative; top: -10px; }
 .photo-album-wrapper .photo-album-col-2 ul li.ml-400 { margin-left:40%; }
+.photo-album-wrapper .photo-album-col-2 ul li.ml-200 { margin-left:20%; }
 
 .photo-album-wrapper.hidden { opacity:0; pointer-events: none; }
 
