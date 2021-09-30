@@ -1,20 +1,32 @@
-$(function(){
-	var ieTest = false,
-		screenWidth = $(window).width(),
-		screenHeight = $(window).height(),
-		imgURL = "http://img.khan.co.kr/spko/storytelling/2021/graduate_country/",
-		isMobile = screenWidth <= 800 && true || false,
-		isNotebook = (screenWidth <= 1380 && screenHeight < 750) && true || false,
-		isMobileLandscape = ( screenWidth > 400 && screenWidth <= 800 && screenHeight < 450 ) && true || false;
+var ieTest = false,
+	screenWidth = $(window).width(),
+	screenHeight = $(window).height(),
+	imgURL = "http://img.khan.co.kr/spko/storytelling/2021/graduate_country/",
+	isMobile = screenWidth <= 800 && true || false,
+	isNotebook = (screenWidth <= 1380 && screenHeight < 750) && true || false,
+	isMobileLandscape = ( screenWidth > 400 && screenWidth <= 800 && screenHeight < 450 ) && true || false;
 	window.onbeforeunload = function(){ window.scrollTo(0, 0) ;}
-	var randomRange = function(n1, n2) {
-		return Math.floor((Math.random() * (n2 - n1 + 1)) + n1);
-	};
-	$(window).resize(function() {
-		screenWidth = $(window).width();
-		screenHeight = $(window).height();
-    });
+var randomRange = function(n1, n2) {
+	return Math.floor((Math.random() * (n2 - n1 + 1)) + n1);
+};
+$(window).resize(function() {
+	screenWidth = $(window).width();
+	screenHeight = $(window).height();
+});
 
+
+/******** 모바일 전용 조정 ********/
+if(isMobile==true){
+	$(".title-svg-pc").html("");
+	$(".interactive-header .page-title").html("지방소녀들은 어디로");
+}else{
+	$(".title-svg-m").html("");
+}
+/******** 모바일 전용 조정 ********/
+
+
+$(function(){
+	
 
 	$(".close-ie-block").on("click", function(){
 		$(".ie-block-9").hide();
@@ -66,14 +78,32 @@ $(function(){
 		$(".loading-page").height(screenHeight);
 		$(".ie-block").height(screenHeight);
 	}
-	/******** 모바일 전용 조정 ********/
-	if(isMobile==true){
-      
-	}else{
 
+
+	function getClassStr(dataObj){
+		var classStr = "";
+		if(dataObj.interview == "O"){
+			classStr = "each-student student-click";
+			star="<div class='star'><img src='img/star.png' alt=''></div>";
+		}else if(dataObj.clickOff == "O"){
+			classStr = "each-student student-off";
+		}else{
+			classStr = "each-student";
+		}
+		
+		if(dataObj.noGraphic !== "O"){
+			classStr = classStr+" student-path"
+		}
+
+		if(dataObj.residence == "수도권"){
+			classStr = classStr+" now-center";
+		}else if(dataObj.residence == "비수도권"){
+			classStr = classStr+" now-outCenter";
+		}else if(dataObj.residence == "미상"){
+			classStr = classStr+" now-unknown";
+		}
+		return classStr;
 	}
-	/******** 모바일 전용 조정 ********/
-
 
 	function makePhotoAlbum(school){
 		var _data;
@@ -88,17 +118,9 @@ $(function(){
 			for(i=0; i<_data.length; i++){
 				var star="";
 				if(_data[i].interview == "O"){
-					classStr = "each-student student-click";
 					star="<div class='star'><img src='img/star.png' alt=''></div>";
-				}else if(_data[i].clickOff == "O"){
-					classStr = "each-student student-off";
-				}else{
-					classStr = "each-student";
 				}
-				
-				if(_data[i].noGraphic !== "O"){
-					classStr = classStr+" student-path"
-				}
+				var classStr = getClassStr(_data[i]);
 
 				var template = "<li class='"+classStr+"' data-id='"+_data[i].id+"'><div class='each-photo'><img src='img/photo_st_"+_data[i].id+".png'alt=''>"+star+"</div><p class='name'>"+_data[i].name+"</p><p class='status'>"+_data[i].occu+"<em class='div'>·</em>"+_data[i].residenceCity+"</p></li>";
 
@@ -126,18 +148,10 @@ $(function(){
 			for(i=0; i<_data.length; i++){
 				var star="";
 				if(_data[i].interview == "O"){
-					classStr = "each-student student-click";
 					star="<div class='star'><img src='img/star.png' alt=''></div>";
-				}else if(_data[i].clickOff == "O"){
-					classStr = "each-student student-off";
-				}else{
-					classStr = "each-student";
 				}
+				var classStr = getClassStr(_data[i]);
 				
-				if(_data[i].noGraphic !== "O"){
-					classStr = classStr+" student-path"
-				}
-
 				var template = "<li class='"+classStr+"' data-id='"+_data[i].id+"'><div class='each-photo'><img src='img/photo_st_"+_data[i].id+".png'alt=''>"+star+"</div><p class='name'>"+_data[i].name+"</p><p class='status'>"+_data[i].occu+"<em class='div'>·</em>"+_data[i].residenceCity+"</p></li>";
 
 				if(i<14){
@@ -183,7 +197,7 @@ $(function(){
 		for(o=0; o<$introItem.length;o++){
 			$introItem.eq(o).delay(o*700).animate({"opacity":"1", "top":"0px"}, 1200, "easeOutSine");
 			if(o == $introItem.length-1){
-				$(".line-deco").delay(2100).animate({"height":"500px"}, 2000, "easeOutSine");
+				$(".line-deco").delay(2100).animate({"height": ((isMobile)? "300px": "500px")}, 2000, "easeOutSine");
 			
 			}
 			
@@ -206,21 +220,48 @@ $(function(){
 		showInterviewPage(_id);
 	});
 
+	if(!isMobile){
+		$(".each-student").on("mouseover", function(){
+			var _id = $(this).attr("data-id");
+			console.log(_id);
+			if($(this).hasClass("student-path")){
+				if( _id<37){
+					$("#ITV_GANG").find(".background-map .stu-path").find("img").attr("src","img/map-path-stu-"+_id+".png");
+				}else{
+					$("#ITV_GOCHANG").find(".background-map .stu-path").find("img").attr("src","img/map-path-stu-"+_id+".png");
+				}
+				
+			}else{
+				$(".interview-list-area .background-map .stu-path").find("img").attr("src","");
+			}		
+		});
+	}
 	
-	$(".each-student").on("mouseover", function(){
-		var _id = $(this).attr("data-id");
-		console.log(_id);
-		if($(this).hasClass("student-path")){
-			$(".interview-list-area .background-map .stu-path").find("img").attr("src","img/map-path-stu-"+_id+".png");
-		}else{
-			$(".interview-list-area .background-map .stu-path").find("img").attr("src","");
-		}		
-	});
 
 	$(".back-button").on("click", function(){
 		var region = $(this).attr("data-region");
 		hideInterviewPage(region);
 	});
+
+	$(".switch").on("click", function(){
+		var region = $(this).attr("data-region");
+		var $body;
+		if(region=="gang"){
+			$body = $("#ITV_GANG");
+		}else{
+			$body = $("#ITV_GOCHANG");
+		}
+
+		if($(this).parent(".switch-btn-holder").hasClass("on")){
+			$(this).parent(".switch-btn-holder").removeClass("on");
+			$body.find(".photo-album-col-2").removeClass("switchOn");
+		}else{
+			$(this).parent(".switch-btn-holder").addClass("on");
+			$body.find(".photo-album-col-2").addClass("switchOn");
+		}
+	});
+
+	
 
 	function makeInterviewPage(dataId){
 		var _personData;
@@ -242,36 +283,89 @@ $(function(){
 		}else{
 			$body = $("#ITV_GOCHANG");
 		}
-		console.log(_qnaData);
+		//console.log(_qnaData);
 		$body.find(".background-map .stu-path img").attr("src","img/map-path-stu-"+dataId+".png");
 		$body.find(".interview-paper-wrapper .interview-area .top-status .photo").attr("src", "img/photo_st_"+dataId+".png");
 		$body.find(".interview-paper-wrapper .interview-area .top-status .nameOcc .name").html(_personData.name);
 		$body.find(".interview-paper-wrapper .interview-area .top-status .nameOcc .occu").html(_personData.occu);
 		$body.find(".interview-paper-wrapper .interview-area .top-status .life-path").html(_qnaData.status);
+		
+		$body.find(".interview-qa-holder").html("");
+		var qnaSetArr = _qnaData.qnaSet.split("<p class='qu'>");
+		qnaSetArr.shift();
+		qnaSetArr = qnaSetArr.map(function(v,i,a){
+			return "<p class='qu'>"+v;
+			
+		});
+		//console.log(qnaSetArr);
+
+		for(q=0; q<qnaSetArr.length;q++){
+			var tempStr = "<div class='each-qa-set'>"+qnaSetArr[q]+"</div>";
+			$body.find(".interview-qa-holder").append(tempStr);
+		}
+		
+		if(isMobile){
+			if(_personData.noGraphic == "O"){
+				$body.find(".mobile-path-map .map-layer .stu-path img").attr("src","");
+				$body.find(".mobile-path-map").hide();
+			}else if(_personData.noGraphic !== "O"){
+				$body.find(".mobile-path-map .map-layer .stu-path img").attr("src","img/map-path-stu-"+dataId+".png");
+				$body.find(".mobile-path-map").show();
+			}
+		}
 
 	}
 
 	function showInterviewPage(id){
+		var $body;
 		if(id<37){
 			$body = $("#ITV_GANG");
 		}else{
 			$body = $("#ITV_GOCHANG");
 		}
-		$body.find(".photo-album-wrapper").addClass("hidden");
-		$body.find(".interview-paper-wrapper").addClass("show");
-		$body.find(".background-map").addClass("show");
+		if(isMobile){
+			$body.find(".photo-album-wrapper").fadeOut();
+			$body.find(".photo-album-wrapper").addClass("hidden");
+			var movePos =$body.offset().top;
+			$("html, body").stop().animate({scrollTop: movePos-35},500, function(){
+				$body.find(".interview-paper-wrapper").fadeIn(100, function(){
+					$body.find(".interview-paper-wrapper").addClass("show");
+				});
+			});
+		}else{
+			$body.find(".photo-album-wrapper").addClass("hidden");
+			$body.find(".interview-paper-wrapper").addClass("show");
+			$body.find(".background-map").addClass("show");
+		}
 
 	};
 
 	function hideInterviewPage(region){
+		var $body;
 		if(region=="gang"){
 			$body = $("#ITV_GANG");
 		}else{
 			$body = $("#ITV_GOCHANG");
 		}
-		$body.find(".photo-album-wrapper").removeClass("hidden");
-		$body.find(".interview-paper-wrapper").removeClass("show");
-		$body.find(".background-map").removeClass("show");
+
+		if(isMobile){
+			$body.find(".interview-paper-wrapper").removeClass("show");
+			setTimeout(function(){
+				$body.find(".interview-paper-wrapper").fadeOut();
+			}, 500);
+			$body.find(".photo-album-wrapper").fadeIn( function(){
+				var movePos =$body.offset().top;
+				$("html, body").stop().animate({scrollTop: movePos-35},500);
+				$body.find(".photo-album-wrapper").removeClass("hidden");
+			});
+
+			
+		}else{
+			$body.find(".photo-album-wrapper").removeClass("hidden");
+			$body.find(".interview-paper-wrapper").removeClass("show");
+			$body.find(".background-map").removeClass("show");
+		}
+
 
 		$(".interview-qa-holder").scrollTop(0);
 	};
@@ -285,15 +379,17 @@ $(function(){
 			}
 		}
 
-		if(nowScroll > $("#FLOW_CHART").offset().top - screenHeight*0.6){
-			if(flowChartAniDone==false){
-				flowChartAniDone = true;
-				makeChartFlow();
+		if(!isMobile){
+			if(nowScroll > $("#FLOW_CHART").offset().top - screenHeight*0.6){
+				if(flowChartAniDone==false){
+					flowChartAniDone = true;
+					makeChartFlow();
+				}
+			}else if(flowChartAniDone==true){
+				flowChartAniDone = false;
+				$(".chart-step-02").css({"height":"1px", "opacity":"0"});
+				$(".chart-step-03").css({"height":"1px", "opacity":"0"});
 			}
-		}else if(flowChartAniDone==true){
-			flowChartAniDone = false;
-			$(".chart-step-02").css({"height":"1px", "opacity":"0"});
-			$(".chart-step-03").css({"height":"1px", "opacity":"0"});
 		}
 
 		if(nowScroll > $("#ALBUM_GANG").offset().top - screenHeight*0.6){
